@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+<div x-data="practiceTracker()" x-init="init()" class="flex flex-col gap-2 justify-center max-w-md mx-auto p-4">
+  {% if error %}
+    <p class="text-red-500">{{ error }}</p>
+  {% endif %}
+  <div class="flex flex-col justify-center p-4 m-4 shadow-xl max-w-sm">
+    <h2 class="text-4xl font-bold p-4 text-center">{{ word.original_word }}</h2>
+    {% if word.pronunciation %}
+      <p class="text-2xl p-4 text-center">{{ word.pronunciation }}</p>
+    {% endif %}
+    <div x-show="showAnswer">
+      <ul class="list-disc p-4 text-xl border-t-2 border-gray-400 border-dotted w-full">
+        {% for m in meanings %}
+          <li>{{ m }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <button x-show="!showAnswer" @click="showAnswer = true" class="btn btn-info">Show Answer</button>
+
+  <!-- The form submits naturally, so the button's value is preserved -->
+  <form method="post" action="" class="flex flex-row gap-2 mx-auto" id="sr-form" x-show="showAnswer">
+    {% csrf_token %}
+    <button type="submit" name="answer" value="1" class="btn btn-info" @click="increment()">Wrong</button>
+    <button type="submit" name="answer" value="2" class="btn btn-info" @click="increment()">Hard</button>
+    <button type="submit" name="answer" value="3" class="btn btn-info" @click="increment()">Correct</button>
+    <button type="submit" name="answer" value="4" class="btn btn-info" @click="increment()">Easy</button>
+  </form>
+</div>
+
+
+<script>
+  function practiceTracker() {
+    return {
+      showAnswer: false,
+      // Object to store counts, with keys as "YYYY-MM-DD" and values as numbers.
+      stats: {},
+      init() {
+        // Load stored stats from localStorage, if available.
+        let stored = localStorage.getItem("wordStats");
+        if (stored) {
+          try {
+            this.stats = JSON.parse(stored);
+          } catch(e) {
+            this.stats = {};
+          }
+        }
+      },
+      increment() {
+        let today = new Date().toISOString().slice(0, 10);
+        if (!this.stats[today]) {
+          this.stats[today] = 0;
+        }
+        this.stats[today]++;
+        localStorage.setItem("wordStats", JSON.stringify(this.stats));
+      },
+      get sortedStats() {
+        // Return stats sorted by date descending (most recent first)
+        return Object.keys(this.stats)
+          .sort((a, b) => new Date(b) - new Date(a))
+          .reduce((acc, key) => {
+            acc[key] = this.stats[key];
+            return acc;
+          }, {});
+      }
+    }
+  }
+  </script>
+{% endblock %}

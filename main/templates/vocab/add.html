@@ -1,0 +1,115 @@
+{% extends "core/base.html" %}
+{% block content %}
+
+<div class="container mx-auto mt-10" x-data="wordForm()">
+    <h1 class="text-2xl font-bold mb-4">Add New Word</h1>
+    <form method="post" class="space-y-4">
+        {% csrf_token %}
+        <div>
+            <label class="block mb-1">Native</label>
+            {{ form.native }}
+        </div>
+        <div>
+            <label class="block mb-1">Franco Translation</label>
+            <input type="text" name="translation" x-model="translation" class="input input-bordered w-full"
+                placeholder="Enter Franco">
+        </div>
+        <!-- Hidden field holding the generated Arabic script -->
+        <input type="hidden" name="script" :value="converted">
+        <div>
+            <label class="block mb-1">Native Info</label>
+            {{ form.native_info }}
+        </div>
+        <div>
+            <label class="block mb-1">Translation Info</label>
+            {{ form.translation_info }}
+        </div>
+        <div class="mt-4">
+            <h2 class="text-lg font-semibold">Live Preview of Arabic Script</h2>
+            <div class="p-2 border rounded bg-white">
+                <span x-text="converted"></span>
+            </div>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Save Word</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function wordForm() {
+        return {
+            translation: '',
+            get converted() {
+                return convertFrancoToArabic(this.translation);
+            }
+        }
+    }
+    function convertFrancoToArabic(text) {
+        // Complete mapping: every Arabic letter (plus 4 short vowels) has a unique Latin key.
+        // Multi-letter sequences are defined first.
+        const mappings = [
+            { key: "kh", value: "خ" },
+            { key: "gh", value: "غ" },
+            { key: "sh", value: "ش" },
+            { key: "th", value: "ث" },
+            { key: "dh", value: "ذ" },
+            // Single-letter mappings for the Arabic alphabet:
+            { key: "2", value: "ء" },
+            { key: "3", value: "ع" },
+            { key: "a", value: "ا" },
+            { key: "b", value: "ب" },
+            { key: "t", value: "ت" },
+            { key: "g", value: "ج" },  // Egyptian Arabic: 'g' for ج
+            { key: "7", value: "ح" },
+            { key: "d", value: "د" },
+            { key: "r", value: "ر" },
+            { key: "z", value: "ز" },
+            { key: "s", value: "س" },
+            { key: "S", value: "ص" },
+            { key: "D", value: "ض" },
+            { key: "T", value: "ط" },
+            { key: "Z", value: "ظ" },
+            { key: "f", value: "ف" },
+            { key: "q", value: "ق" },
+            { key: "k", value: "ك" },
+            { key: "l", value: "ل" },
+            { key: "m", value: "م" },
+            { key: "n", value: "ن" },
+            { key: "h", value: "ه" },
+            { key: "w", value: "و" },
+            { key: "y", value: "ي" },
+            // Short vowels / diacritics (using unique Latin keys):
+            { key: "A", value: "َ" }, // Fatha
+            { key: "U", value: "ُ" }, // Damma
+            { key: "I", value: "ِ" }, // Kasra
+            { key: "O", value: "ْ" }  // Sukun
+        ];
+
+        let result = '';
+        let i = 0;
+        while (i < text.length) {
+            let matched = false;
+            // Attempt to match the longest key (max length 2)
+            for (let len = 2; len > 0; len--) {
+                if (i + len <= text.length) {
+                    const substr = text.substring(i, i + len);
+                    const entry = mappings.find(m => m.key === substr);
+                    if (entry) {
+                        result += entry.value;
+                        i += len;
+                        matched = true;
+                        break;
+                    }
+                }
+            }
+            if (!matched) {
+                // Skip characters with no mapping.
+                i++;
+            }
+        }
+        return result;
+    }
+</script>
+
+{% endblock %}

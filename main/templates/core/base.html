@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Language Learning App</title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.23/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+
+<body class="flex flex-col justify-between h-full">
+  <header class="p-4 mb-10 flex flex-row gap-2 justify-center w-full bg-slate-200 dark:bg-slate-800">
+    <nav class="flex flex-row gap-2 justify-between px-2 w-full items-center">
+    </nav>
+  </header>
+  <main class="flex flex-col items-center gap-2 mx-auto flex-1">
+    {% block content %}
+    {% endblock %}
+  </main>
+  <footer class="flex flex-row gap-2 justify-center p-4 w-full bg-slate-200 dark:bg-slate-800 mt-10">
+  </footer>
+</body>
+
+</html>
