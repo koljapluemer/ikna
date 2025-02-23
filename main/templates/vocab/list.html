@@ -22,7 +22,13 @@
             </tr>
             {% empty %}
             <tr>
-                <td colspan="4" class="text-center">No words found.</td>
+                <td colspan="4" class="text-center">You haven't added any words.
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <a href="{% url 'vocab_add' %}" class="btn btn-primary">Add Vocab</a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>

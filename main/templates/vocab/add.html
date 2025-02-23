@@ -179,10 +179,10 @@
             <!-- Hidden field for Arabic script -->
             <input type="hidden" name="script" :value="converted">
 
-            <div class="flex flex-col gap-1 items-start border-t-2 border-dotted border-gray-400 pt-2">
+            <div class="flex flex-col gap-1 items-start border-t-2 border-dotted border-gray-400 pt-2 w-full">
                 <label class="">🇩🇪/🇬🇧</label>
                 <input type="text" name="native" value="{{ word.native|default:'' }}"
-                    class="input input-bordered input-lg flex-1" placeholder="e.g. 'Milk'">
+                    class="input input-bordered input-lg w-full" placeholder="e.g. 'Milk'">
                 <textarea name="native_info" class="textarea textarea-bordered w-full"
                     placeholder="Extra info: word form, usage context, ...">{{ word.native_info|default:'' }}</textarea>
             </div>
