@@ -1,66 +1,223 @@
-{% extends "core/base.html" %}
+{% extends 'core/base.html' %}
 {% block content %}
-
-<div class="container mx-auto mt-10" x-data="wordForm()">
-    <h1 class="text-2xl font-bold mb-4">Add New Word</h1>
-    <form method="post" class="space-y-4">
+<div class="w-full max-w-xl" x-data="wordForm('{{ word.translation|default:"" }}')">
+    <h1 class="text-2xl font-bold mb-4">
+        {% if word %}Edit Word{% else %}Add New Word{% endif %}
+    </h1>
+    <form method="post" action="{% if word %}{% url 'vocab_edit' word.pk %}{% else %}{% url 'vocab_add' %}{% endif %}"
+        class="space-y-4">
         {% csrf_token %}
         <div>
             <label class="block mb-1">Native</label>
-            {{ form.native }}
+            <input type="text" name="native" value="{{ word.native|default:'' }}" class="input input-bordered w-full"
+                placeholder="Enter native word">
         </div>
         <div>
             <label class="block mb-1">Franco Translation</label>
-            <input type="text" name="translation" x-model="translation" class="input input-bordered w-full"
-                placeholder="Enter Franco">
+            <input type="text" name="translation" x-model="translation" value="{{ word.translation|default:'' }}"
+                class="input input-bordered w-full" placeholder="Enter Franco">
         </div>
-        <!-- Hidden field holding the generated Arabic script -->
+        <!-- Hidden field for Arabic script -->
         <input type="hidden" name="script" :value="converted">
         <div>
             <label class="block mb-1">Native Info</label>
-            {{ form.native_info }}
+            <textarea name="native_info" class="textarea textarea-bordered w-full"
+                placeholder="Enter native info">{{ word.native_info|default:'' }}</textarea>
         </div>
         <div>
             <label class="block mb-1">Translation Info</label>
-            {{ form.translation_info }}
+            <textarea name="translation_info" class="textarea textarea-bordered w-full"
+                placeholder="Enter translation info">{{ word.translation_info|default:'' }}</textarea>
         </div>
         <div class="mt-4">
             <h2 class="text-lg font-semibold">Live Preview of Arabic Script</h2>
-            <div class="p-2 border rounded bg-white">
+            <div class="p-2 border rounded bg-white dark:bg-slate-700">
                 <span x-text="converted"></span>
             </div>
         </div>
         <div class="mt-4">
-            <button type="submit" class="btn btn-primary">Save Word</button>
+            <button type="submit" class="btn btn-primary">
+                {% if word %}Save Changes{% else %}Save Word{% endif %}
+            </button>
+        </div>
+        <div class="mt-6 w-full">
+            <details class="bg-white dark:bg-slate-800 p-4 rounded shadow">
+                <summary class="font-bold cursor-pointer">How does the Franco conversion work?</summary>
+                <div class="mt-2 text-sm text-gray-700 dark:text-gray-300">
+                    <p class="mb-4">
+                        This conversion uses a complete mapping from unique Latin keys to each Arabic letter—including
+                        all 4 short vowels. Multi-letter sequences are matched first, then single-letter keys.
+                    </p>
+                    <table class="table w-full">
+                        <thead class="bg-slate-200 dark:bg-slate-600">
+                            <tr>
+                                <th class="p-2">Latin Key</th>
+                                <th class="p-2">Arabic Character</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="p-2">kh</td>
+                                <td class="p-2">خ</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">gh</td>
+                                <td class="p-2">غ</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">sh</td>
+                                <td class="p-2">ش</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">th</td>
+                                <td class="p-2">ث</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">dh</td>
+                                <td class="p-2">ذ</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">2</td>
+                                <td class="p-2">ء</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">3</td>
+                                <td class="p-2">ع</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">a</td>
+                                <td class="p-2">ا</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">b</td>
+                                <td class="p-2">ب</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">t</td>
+                                <td class="p-2">ت</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">g</td>
+                                <td class="p-2">ج</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">7</td>
+                                <td class="p-2">ح</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">d</td>
+                                <td class="p-2">د</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">r</td>
+                                <td class="p-2">ر</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">z</td>
+                                <td class="p-2">ز</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">s</td>
+                                <td class="p-2">س</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">S</td>
+                                <td class="p-2">ص</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">D</td>
+                                <td class="p-2">ض</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">T</td>
+                                <td class="p-2">ط</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">Z</td>
+                                <td class="p-2">ظ</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">f</td>
+                                <td class="p-2">ف</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">q</td>
+                                <td class="p-2">ق</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">k</td>
+                                <td class="p-2">ك</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">l</td>
+                                <td class="p-2">ل</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">m</td>
+                                <td class="p-2">م</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">n</td>
+                                <td class="p-2">ن</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">h</td>
+                                <td class="p-2">ه</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">w</td>
+                                <td class="p-2">و</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">y</td>
+                                <td class="p-2">ي</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">A</td>
+                                <td class="p-2">َ</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">U</td>
+                                <td class="p-2">ُ</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">I</td>
+                                <td class="p-2">ِ</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">O</td>
+                                <td class="p-2">ْ</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </details>
         </div>
     </form>
 </div>
 
 <script>
-    function wordForm() {
+    function wordForm(initialTranslation = '') {
         return {
-            translation: '',
+            translation: initialTranslation,
             get converted() {
                 return convertFrancoToArabic(this.translation);
             }
         }
     }
     function convertFrancoToArabic(text) {
-        // Complete mapping: every Arabic letter (plus 4 short vowels) has a unique Latin key.
-        // Multi-letter sequences are defined first.
         const mappings = [
             { key: "kh", value: "خ" },
             { key: "gh", value: "غ" },
             { key: "sh", value: "ش" },
             { key: "th", value: "ث" },
             { key: "dh", value: "ذ" },
-            // Single-letter mappings for the Arabic alphabet:
             { key: "2", value: "ء" },
             { key: "3", value: "ع" },
             { key: "a", value: "ا" },
             { key: "b", value: "ب" },
             { key: "t", value: "ت" },
-            { key: "g", value: "ج" },  // Egyptian Arabic: 'g' for ج
+            { key: "g", value: "ج" },
             { key: "7", value: "ح" },
             { key: "d", value: "د" },
             { key: "r", value: "ر" },
@@ -79,37 +236,30 @@
             { key: "h", value: "ه" },
             { key: "w", value: "و" },
             { key: "y", value: "ي" },
-            // Short vowels / diacritics (using unique Latin keys):
-            { key: "A", value: "َ" }, // Fatha
-            { key: "U", value: "ُ" }, // Damma
-            { key: "I", value: "ِ" }, // Kasra
-            { key: "O", value: "ْ" }  // Sukun
+            { key: "A", value: "َ" },
+            { key: "U", value: "ُ" },
+            { key: "I", value: "ِ" },
+            { key: "O", value: "ْ" }
         ];
-
         let result = '';
         let i = 0;
         while (i < text.length) {
             let matched = false;
-            // Attempt to match the longest key (max length 2)
             for (let len = 2; len > 0; len--) {
                 if (i + len <= text.length) {
                     const substr = text.substring(i, i + len);
-                    const entry = mappings.find(m => m.key === substr);
-                    if (entry) {
-                        result += entry.value;
+                    const mapping = mappings.find(m => m.key === substr);
+                    if (mapping) {
+                        result += mapping.value;
                         i += len;
                         matched = true;
                         break;
                     }
                 }
             }
-            if (!matched) {
-                // Skip characters with no mapping.
-                i++;
-            }
+            if (!matched) { i++; }
         }
         return result;
     }
 </script>
-
 {% endblock %}

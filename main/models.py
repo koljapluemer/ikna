@@ -3,6 +3,7 @@ from django.conf import settings
 
 
 class Word(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     native = models.CharField(max_length=100)
     translation = models.CharField(max_length=100)
     script = models.CharField(max_length=100, blank=True)
