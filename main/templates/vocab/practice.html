@@ -1,0 +1,63 @@
+{% extends "core/base.html" %}
+{% block content %}
+<div x-data="practiceTracker()" x-init="init()" class="flex flex-col gap-2 justify-center p-4">
+    {% if error %}
+    <p class="text-red-500">{{ error }}</p>
+    {% endif %}
+    <div class="flex flex-col justify-center items-center p-4 m-4 shadow-xl rounded bg-white dark:bg-slate-700">
+        <p class="text-2xl p-4 text-center">{{ word.native }}</p>
+        <small class="text-xs text-center">{{word.native_info}}</small>
+        <div x-show="showAnswer" class="mt-10">
+            <p class="text-4xl font-bold p-4 text-center">{{ word.script }}</p>
+        <small class="text-xs text-center">{{word.translation_info}}</small>
+
+        </div>
+    </div>
+
+    <button x-show="!showAnswer" @click="showAnswer = true" class="btn btn-info">Show Answer</button>
+
+    <!-- When the answer is revealed, display the rating buttons -->
+    <form method="post" action="" class="flex flex-col gap-2" id="sr-form" x-show="showAnswer">
+        {% csrf_token %}
+        <button type="submit" name="answer" value="1" class="btn btn-info" @click="increment()">Wrong</button>
+        <button type="submit" name="answer" value="2" class="btn btn-info" @click="increment()">Hard</button>
+        <button type="submit" name="answer" value="3" class="btn btn-info" @click="increment()">Correct</button>
+        <button type="submit" name="answer" value="4" class="btn btn-info" @click="increment()">Easy</button>
+    </form>
+</div>
+
+<script>
+    function practiceTracker() {
+        return {
+            showAnswer: false,
+            stats: {},
+            init() {
+                let stored = localStorage.getItem("wordStats");
+                if (stored) {
+                    try {
+                        this.stats = JSON.parse(stored);
+                    } catch (e) {
+                        this.stats = {};
+                    }
+                }
+            },
+            increment() {
+                let today = new Date().toISOString().slice(0, 10);
+                if (!this.stats[today]) {
+                    this.stats[today] = 0;
+                }
+                this.stats[today]++;
+                localStorage.setItem("wordStats", JSON.stringify(this.stats));
+            },
+            get sortedStats() {
+                return Object.keys(this.stats)
+                    .sort((a, b) => new Date(b) - new Date(a))
+                    .reduce((acc, key) => {
+                        acc[key] = this.stats[key];
+                        return acc;
+                    }, {});
+            }
+        }
+    }
+</script>
+{% endblock %}

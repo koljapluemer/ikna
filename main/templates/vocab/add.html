@@ -7,45 +7,24 @@
     <form method="post" action="{% if word %}{% url 'vocab_edit' word.pk %}{% else %}{% url 'vocab_add' %}{% endif %}"
         class="space-y-4">
         {% csrf_token %}
-        <div>
-            <label class="block mb-1">Native</label>
-            <input type="text" name="native" value="{{ word.native|default:'' }}" class="input input-bordered w-full"
-                placeholder="Enter native word">
-        </div>
-        <div>
-            <label class="block mb-1">Franco Translation</label>
+
+        <div class="flex flex-col gap-1 items-start border-t-2 border-dotted border-gray-400 pt-2">
+            <label class="">🇪🇬</label>
             <input type="text" name="translation" x-model="translation" value="{{ word.translation|default:'' }}"
-                class="input input-bordered w-full" placeholder="Enter Franco">
-        </div>
-        <!-- Hidden field for Arabic script -->
-        <input type="hidden" name="script" :value="converted">
-        <div>
-            <label class="block mb-1">Native Info</label>
-            <textarea name="native_info" class="textarea textarea-bordered w-full"
-                placeholder="Enter native info">{{ word.native_info|default:'' }}</textarea>
-        </div>
-        <div>
-            <label class="block mb-1">Translation Info</label>
-            <textarea name="translation_info" class="textarea textarea-bordered w-full"
-                placeholder="Enter translation info">{{ word.translation_info|default:'' }}</textarea>
-        </div>
-        <div class="mt-4">
-            <h2 class="text-lg font-semibold">Live Preview of Arabic Script</h2>
-            <div class="p-2 border rounded bg-white dark:bg-slate-700">
-                <span x-text="converted"></span>
+                class="input input-bordered w-full input-lg" placeholder="e.g. 'lAbAn'">
+
+
+            <div class="p-2 input input-lg input-bordered w-full">
+                <span x-text="converted" class="text-xl"></span>
             </div>
-        </div>
-        <div class="mt-4">
-            <button type="submit" class="btn btn-primary">
-                {% if word %}Save Changes{% else %}Save Word{% endif %}
-            </button>
-        </div>
-        <div class="mt-6 w-full">
+
             <details class="bg-white dark:bg-slate-800 p-4 rounded shadow">
-                <summary class="font-bold cursor-pointer">How does the Franco conversion work?</summary>
+                <summary class="cursor-pointer text-xs">Type in Franco. Arabic script will be automatically generated.
+                    Click here to see how the conversion works.</summary>
                 <div class="mt-2 text-sm text-gray-700 dark:text-gray-300">
                     <p class="mb-4">
-                        This conversion uses a complete mapping from unique Latin keys to each Arabic letter—including
+                        This conversion uses a complete mapping from unique Latin keys to each Arabic
+                        letter—including
                         all 4 short vowels. Multi-letter sequences are matched first, then single-letter keys.
                     </p>
                     <table class="table w-full">
@@ -192,7 +171,29 @@
                     </table>
                 </div>
             </details>
-        </div>
+
+            <textarea name="translation_info" class="textarea textarea-bordered w-full"
+                placeholder="Extra info: plural, conjugation forms, ...">{{ word.translation_info|default:'' }}</textarea>
+
+
+            <!-- Hidden field for Arabic script -->
+            <input type="hidden" name="script" :value="converted">
+
+            <div class="flex flex-col gap-1 items-start border-t-2 border-dotted border-gray-400 pt-2">
+                <label class="">🇩🇪/🇬🇧</label>
+                <input type="text" name="native" value="{{ word.native|default:'' }}"
+                    class="input input-bordered input-lg flex-1" placeholder="e.g. 'Milk'">
+                <textarea name="native_info" class="textarea textarea-bordered w-full"
+                    placeholder="Extra info: word form, usage context, ...">{{ word.native_info|default:'' }}</textarea>
+            </div>
+
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">
+                    {% if word %}Save Changes{% else %}Save Word{% endif %}
+                </button>
+            </div>
+
     </form>
 </div>
 
@@ -239,7 +240,8 @@
             { key: "A", value: "َ" },
             { key: "U", value: "ُ" },
             { key: "I", value: "ِ" },
-            { key: "O", value: "ْ" }
+            { key: "O", value: "ْ" },
+            { key: " ", value: " " }
         ];
         let result = '';
         let i = 0;
