@@ -11,6 +11,7 @@
     <a href="{% url 'prompt.new' %}" class="btn btn-sm btn-outline">Get New Prompt</a>
     <form action="{% url 'prompt.new' %}" method="POST">
         {% csrf_token %}
+        <input type="hidden" name="message" value="{{ prompt_message }}">
         <button class="btn btn-sm btn-primary" type="submit">Accept</button>
     </form>
 

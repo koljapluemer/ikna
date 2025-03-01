@@ -4,7 +4,7 @@ from django.conf import settings
 class Prompt(models.Model):
     message = models.TextField()
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    answer = models.TextField()
+    answer = models.TextField(blank=True, null=True)
     is_finished = models.BooleanField(default=False)
 
     def __str__(self):

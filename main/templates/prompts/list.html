@@ -3,4 +3,12 @@
 
 all your prompts:
 
+
+<ul class="list-disc">
+    {% for prompt in prompts %}
+    <li>{{ prompt }}</li>
+    {% endfor %}
+</ul>
+
+
 {% endblock %}
