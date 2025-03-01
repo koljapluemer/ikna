@@ -147,3 +147,7 @@ def vocab_practice(request):
         return redirect(reverse('vocab_practice'))
     
     return render(request, 'vocab/practice.html', {'word': word})
+
+
+def prompt(request):
+    return render(request, 'prompts/prompt.html')

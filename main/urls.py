@@ -7,4 +7,5 @@ urlpatterns = [
     path('<int:pk>/edit/', vocab_add, name='vocab_edit'),
     path('list/', vocab_list, name='vocab_list'),
     path('practice/', vocab_practice, name='vocab_practice'),
+    path('prompt/', prompt, name='prompt'),
 ]
