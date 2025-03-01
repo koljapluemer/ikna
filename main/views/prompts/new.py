@@ -40,7 +40,8 @@ def prompt_new(request):
     if request.method == 'POST':
         message = request.POST.get('message')
         if message:
-            Prompt.objects.create(user=request.user, message=message)
+            p = Prompt.objects.create(user=request.user, message=message)
+            request.session["active_prompt"] = p.pk
             return redirect('prompt.list')
     
     prompt_message = "Create a story using the following emojis: " + random.choice(EMOJIS) + random.choice(EMOJIS)

@@ -1,6 +1,49 @@
-{% extends 'core/base.html' %}
+{% extends "core/base.html" %}
 {% block content %}
+<div class="flex flex-col gap-2 justify-center max-w-md mx-auto p-4">
+    <div class="flex flex-col justify-center p-4 m-4 shadow-xl max-w-sm">
+        <h2 class="text-4xl font-bold p-4 text-center">Add Vocab for: {{ prompt.message }}</h2>
 
-which words do you need to know for your answer?
+        <!-- Native Word Fields (with one empty field always present) -->
+        <form method="POST" action="" class="flex flex-col gap-2 mx-auto items-center" id="vocab-form">
+            {% csrf_token %}
+            <div id="vocab-fields" class="flex flex-col gap-2">
+                <input type="text" name="native_words" class="input input-bordered" placeholder="Enter native word" />
+            </div>
 
+            <button type="submit" class="btn btn-info mt-4">Submit Vocabulary</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const vocabFieldsContainer = document.getElementById('vocab-fields');
+        let inputFields = vocabFieldsContainer.getElementsByTagName('input');
+
+        // Function to add a new field if all existing fields are filled
+        function handleNativeWords() {
+            // If the last input field is filled, add a new input field
+            if (inputFields[inputFields.length - 1].value.trim() !== '') {
+                const newInputDiv = document.createElement('div');
+                newInputDiv.classList.add('flex', 'flex-row', 'gap-2');
+
+                const newInput = document.createElement('input');
+                newInput.type = 'text';
+                newInput.name = 'native_words';
+                newInput.classList.add('input', 'input-bordered');
+                newInput.placeholder = 'Enter native word';
+
+                newInputDiv.appendChild(newInput);
+                vocabFieldsContainer.appendChild(newInputDiv);
+            }
+        }
+
+        // Watch for input changes and dynamically add new fields
+        vocabFieldsContainer.addEventListener('input', function () {
+            inputFields = vocabFieldsContainer.getElementsByTagName('input'); // Update reference to all input fields
+            handleNativeWords();
+        });
+    });
+</script>
 {% endblock %}

@@ -37,6 +37,7 @@
         <nav
             class="flex flex-row gap-2 justify-center w-full items-center border-t-2 border-dotted border-gray-400 p-2">
             {% if request.session.learning_mode == 'vocab' %}
+
             <a href="{% url 'vocab.add' %}"
                 class="btn btn-sm btn-outline {% if 'add' in request.path %}btn-primary{% endif %}">
                 {% lucide 'file-plus-2' %}
@@ -52,17 +53,25 @@
                 {% lucide 'logs' %}
                 List
             </a>
+
             {% elif request.session.learning_mode == 'prompts' %}
+
             <a href="{% url 'prompt.new' %}"
                 class="btn btn-sm btn-outline {% if 'new' in request.path %}btn-primary{% endif %}">
                 {% lucide 'file-plus-2' %}
                 New Prompt
+            </a>
+            <a href="{% url 'prompt.add_vocab' %}"
+                class="btn btn-sm btn-outline {% if 'add_vocab' in request.path %}btn-primary{% endif %}">
+                {% lucide 'blocks' %}
+                Add Vocab
             </a>
             <a href="{% url 'prompt.list' %}"
                 class="btn btn-sm btn-outline {% if 'list' in request.path %}btn-primary{% endif %}">
                 {% lucide 'logs' %}
                 Overview
             </a>
+
             {% endif %}
         </nav>
     </header>
