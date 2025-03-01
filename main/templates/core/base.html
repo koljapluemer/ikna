@@ -9,41 +9,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-
+{% load lucide %}
 <body class="flex flex-col justify-between h-full">
     <header class="p-2 mb-10 flex flex-row gap-2 justify-center w-full bg-slate-200 dark:bg-slate-800">
         <nav class="flex flex-row gap-2 justify-center w-full items-center">
             <a href="{% url 'vocab_add' %}" class="btn btn-sm btn-outline">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="size-5">
-                    <path d="M4 22h14a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v4" />
-                    <path d="M14 2v4a2 2 0 0 0 2 2h4" />
-                    <path d="M3 15h6" />
-                    <path d="M6 12v6" />
-                </svg>
+                {% lucide 'file-plus-2' %}
                 Add
             </a>
             <a href="{% url 'vocab_practice' %}" class="btn btn-sm btn-outline">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="size-5">
-                    <rect width="18" height="18" x="3" y="3" rx="2" />
-                    <path d="M21 7.5H3" />
-                    <path d="M21 12H3" />
-                    <path d="M21 16.5H3" />
-                </svg>
+                {% lucide 'graduation-cap' %}
                 Practice
             </a>
             <a href="{% url 'vocab_list' %}" class="btn btn-sm btn-outline">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="size-5">
-                    <rect width="18" height="18" x="3" y="3" rx="2" />
-                    <path d="M21 7.5H3" />
-                    <path d="M21 12H3" />
-                    <path d="M21 16.5H3" />
-                </svg>
+                {% lucide 'logs' %}
                 List
             </a>
         </nav>

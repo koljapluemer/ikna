@@ -1,7 +1,10 @@
 import os
-from pathlib import Path
 import dj_database_url
+from decouple import config
+from pathlib import Path
 
+
+DATABASE_URL = config('DATABASE_URL', default='sqlite:///db.sqlite3')
 # Build paths inside the project
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,7 +24,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'main',  # Your app
+    'main',  
+    'lucide'
 ]
 
 MIDDLEWARE = [
@@ -56,11 +60,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ikna.wsgi.application'
 
-# Database
-# Use DATABASE_URL environment variable if available (e.g., on Heroku), else default to sqlite.
 DATABASES = {
-    'default': dj_database_url.config(default=f'sqlite:///{BASE_DIR / "db.sqlite3"}')
+    'default': dj_database_url.config(default=DATABASE_URL)
 }
+
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -78,20 +81,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Internationalization settings
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-# Use WhiteNoise to compress and cache static files
+
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_DIRS = [ BASE_DIR / 'static' ]
 
-# Optionally, add logging configuration here if needed
 
-# Activate Django-Heroku.
-import django_heroku
-django_heroku.settings(locals())
