@@ -1,11 +1,16 @@
 from django.urls import path
-from .views import *
+
+from main.views.vocab.add_or_edit import vocab_add_or_edit
+from main.views.vocab.delete import vocab_delete
+from main.views.vocab.list import vocab_list
+from main.views.vocab.practice import vocab_practice
 
 urlpatterns = [
-    path('', vocab_list, name='vocab_list'),
-    path('add/', vocab_add, name='vocab_add'),
-    path('<int:pk>/edit/', vocab_add, name='vocab_edit'),
-    path('list/', vocab_list, name='vocab_list'),
-    path('practice/', vocab_practice, name='vocab_practice'),
-    path('prompt/', prompt, name='prompt'),
+    # TODO: this one is the one I want as start, I think: path('', combined_queue, name='combined_queue'),
+    path('', vocab_add_or_edit, name='home'),
+    path('vocab/add/', vocab_add_or_edit, name='vocab.add'),
+    path('vocab/<int:pk>/edit/', vocab_add_or_edit, name='vocab.edit'),
+    path('vocab/list/', vocab_list, name='vocab.list'),
+    path('vocab/practice/', vocab_practice, name='vocab.practice'), # type: ignore
+    path('vocab/<int:pk>/delete/', vocab_delete, name='vocab.delete'), 
 ]

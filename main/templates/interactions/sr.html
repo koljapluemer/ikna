@@ -1,6 +1,6 @@
 {% extends "core/base.html" %}
 {% block content %}
-<div x-data="practiceTracker()" x-init="init()" class="flex flex-col gap-2 justify-center p-4">
+<div class="flex flex-col gap-2 justify-center p-4" x-data="{ showAnswer: false }">
     {% if error %}
     <p class="text-red-500">{{ error }}</p>
     {% endif %}
@@ -26,38 +26,4 @@
     </form>
 </div>
 
-<script>
-    function practiceTracker() {
-        return {
-            showAnswer: false,
-            stats: {},
-            init() {
-                let stored = localStorage.getItem("wordStats");
-                if (stored) {
-                    try {
-                        this.stats = JSON.parse(stored);
-                    } catch (e) {
-                        this.stats = {};
-                    }
-                }
-            },
-            increment() {
-                let today = new Date().toISOString().slice(0, 10);
-                if (!this.stats[today]) {
-                    this.stats[today] = 0;
-                }
-                this.stats[today]++;
-                localStorage.setItem("wordStats", JSON.stringify(this.stats));
-            },
-            get sortedStats() {
-                return Object.keys(this.stats)
-                    .sort((a, b) => new Date(b) - new Date(a))
-                    .reduce((acc, key) => {
-                        acc[key] = this.stats[key];
-                        return acc;
-                    }, {});
-            }
-        }
-    }
-</script>
 {% endblock %}

@@ -10,24 +10,38 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 {% load lucide %}
+
 <body class="flex flex-col justify-between h-full">
-    <header class="p-2 mb-10 flex flex-row gap-2 justify-center w-full bg-slate-200 dark:bg-slate-800">
+    {% if messages %}
+    <div class="fixed top-4 right-4 space-y-2">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <header class="p-2 mb-10 flex flex-col gap-2 w-full bg-slate-200 dark:bg-slate-800">
         <nav class="flex flex-row gap-2 justify-center w-full items-center">
-            <a href="{% url 'vocab_add' %}" class="btn btn-sm btn-outline">
+            <a href="{% url 'vocab.practice' %}" class="btn  btn-outline">
+                Vocab
+            </a>
+        </nav>
+
+        <nav
+            class="flex flex-row gap-2 justify-center w-full items-center border-t-2 border-dotted border-gray-400 p-2">
+            <a href="{% url 'vocab.add' %}" class="btn btn-sm btn-outline">
                 {% lucide 'file-plus-2' %}
                 Add
             </a>
-            <a href="{% url 'vocab_practice' %}" class="btn btn-sm btn-outline">
+            <a href="{% url 'vocab.practice' %}" class="btn btn-sm  btn-outline">
                 {% lucide 'graduation-cap' %}
                 Practice
             </a>
-            <a href="{% url 'vocab_list' %}" class="btn btn-sm btn-outline">
+            <a href="{% url 'vocab.list' %}" class="btn btn-sm  btn-outline">
                 {% lucide 'logs' %}
                 List
-            </a>
-            <a href="{% url 'prompt' %}" class="btn btn-sm btn-outline">
-                {% lucide 'terminal' %}
-                Prompt
             </a>
         </nav>
     </header>

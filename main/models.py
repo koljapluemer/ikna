@@ -1,14 +1,28 @@
 from django.db import models
 from django.conf import settings
 
+class Prompt(models.Model):
+    message = models.TextField()
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    answer = models.TextField()
+    is_finished = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.message
+    
 
 class Word(models.Model):
+    objects = None
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     native = models.CharField(max_length=100)
-    translation = models.CharField(max_length=100)
-    script = models.CharField(max_length=100, blank=True)
-    native_info = models.TextField(blank=True)
-    translation_info = models.TextField(blank=True)
+    translation = models.CharField(max_length=100, blank=True, null=True)
+    script = models.CharField(max_length=100, blank=True, null=True)
+    native_info = models.TextField(blank=True, null=True)
+    translation_info = models.TextField(blank=True, null=True)
+    prompts = models.ManyToManyField('Prompt', blank=True)
+
+    def __str__(self):
+        return f"{self.native} - {self.script}"
 
 
 class WordPractice(models.Model):

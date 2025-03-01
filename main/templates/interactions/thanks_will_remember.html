@@ -1,0 +1,21 @@
+{% extends "core/base.html" %}
+{% block content %}
+<div class="flex flex-col gap-2 justify-center p-4">
+    <div class="flex flex-col justify-center items-center p-4 m-4 shadow-xl rounded bg-white dark:bg-slate-700">
+        <p class="text-2xl p-4 text-center">{{ word.native }}</p>
+        <small class="text-xs text-center">{{word.native_info}}</small>
+        <div class="mt-10">
+            <p class="text-4xl font-bold p-4 text-center">{{ word.script }}</p>
+        <small class="text-xs text-center">{{word.translation_info}}</small>
+
+        </div>
+    </div>
+
+
+    <form method="post" action="" class="flex flex-col gap-2">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-info" @click="increment()">I Will Remember</button>
+    </form>
+</div>
+
+{% endblock %}
