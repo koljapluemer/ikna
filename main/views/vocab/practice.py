@@ -18,21 +18,15 @@ def vocab_practice(request):
 
     # For each word, if no practice record exists or it’s due, consider it due.
     for word in words_qs:
-        try:
-            practice = word.vocab_practices.get(user=request.user) # type: ignore
-        except WordPractice.DoesNotExist:
-            practice = None
+        practice = word.vocab_practices.filter(user=request.user).first() # type: ignore
         if practice is None or (practice.due is not None and practice.due <= now):
             due_words.append((word, practice))
     
-    print("DUE WORDS", len(due_words))    
-
     if not due_words:
         messages.warning(request, "Nothing to practice right now.")
         return redirect('vocab.list')
     
     word, practice = random.choice(due_words)
-
 
     # use different interactions according to
     # whether word is seen for the first time

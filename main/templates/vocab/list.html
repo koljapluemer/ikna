@@ -8,7 +8,7 @@
         <tbody>
             {% for word in page_obj %}
             <tr>
-                <td>{{ word.script }}</td>
+                <td class="text-lg">{{ word.script }}</td>
                 <td>{{ word.native }}</td>
                 <td>
                     <a href="{% url 'vocab.edit' word.id %}" class="btn btn-circle btn-sm">
