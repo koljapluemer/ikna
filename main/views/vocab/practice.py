@@ -19,7 +19,7 @@ def vocab_practice(request):
     # For each word, if no practice record exists or it’s due, consider it due.
     for word in words_qs:
         practice = word.vocab_practices.filter(user=request.user).first() # type: ignore
-        if practice is None or (practice.due is not None and practice.due <= now):
+        if word.script != None and (practice is None or (practice.due is not None and practice.due <= now)):
             due_words.append((word, practice))
     
     if not due_words:
