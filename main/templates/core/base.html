@@ -66,8 +66,14 @@
                 {% lucide 'blocks' %}
                 Add Vocab
             </a>
+            <a href="{% url 'prompt.vocab_list' %}"
+                class="btn btn-sm  btn-outline {% if 'vocab_list' in request.path %}btn-primary{% endif %}">
+                {% lucide 'waypoints' %}
+                Related Vocab
+            </a>
+
             <a href="{% url 'prompt.list' %}"
-                class="btn btn-sm btn-outline {% if 'list' in request.path %}btn-primary{% endif %}">
+                class="btn btn-sm btn-outline {% if 'list' in request.path and not 'vocab_' in request.path %}btn-primary{% endif %}">
                 {% lucide 'logs' %}
                 Overview
             </a>

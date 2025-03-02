@@ -6,6 +6,7 @@ from main.views.prompts.add_vocab import prompt_add_vocab
 from main.views.prompts.list import prompt_list
 from main.views.prompts.new import prompt_new
 from main.views.prompts.utils import activate_prompt, deactivate_prompt
+from main.views.prompts.vocab_list import prompt_vocab_list
 from main.views.vocab.add_or_edit import vocab_add_or_edit
 from main.views.vocab.delete import vocab_delete
 from main.views.vocab.list import vocab_list
@@ -27,6 +28,8 @@ urlpatterns = [
     path('prompt/add_vocab/', prompt_add_vocab, name='prompt.add_vocab'),
     path('prompt/<int:pk>/activate/', activate_prompt, name='prompt.activate'),
     path('prompt/<int:pk>/deactivate/', deactivate_prompt, name='prompt.deactivate'),
+    path('prompt/<int:pk>/vocab_list/', prompt_vocab_list, name='prompt.vocab_list'),
+    path('prompt/vocab_list/', prompt_vocab_list, name='prompt.vocab_list'),
     # interactions
     path('interaction/sr/<int:pk>/', interaction_sr, name='interaction.sr'), # type: ignore
     path('interaction/thanks_will_remember/<int:pk>/', interaction_thanks_will_remember, name='interaction.thanks_will_remember'), # type: ignore
