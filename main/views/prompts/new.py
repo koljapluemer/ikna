@@ -38,12 +38,16 @@ EMOJIS = [
 def prompt_new(request):
     request.session["learning_mode"] = "prompts"
     if request.method == 'POST':
-        message = request.POST.get('message')
-        if message:
-            p = Prompt.objects.create(user=request.user, message=message)
-            request.session["active_prompt"] = p.pk
-            return redirect('prompt.list')
+        task = request.POST.get('task')
+        content = request.POST.get('content')
+
+        p = Prompt.objects.create(user=request.user, 
+                                    is_active_prompt=True,
+                                    task=task,
+                                    content=content)
+        return redirect('prompt.add_vocab', pk=p.pk)
     
-    prompt_message = "Create a story using the following emojis: " + random.choice(EMOJIS) + random.choice(EMOJIS)
-    return render(request, 'prompts/new.html', {'prompt_message': prompt_message})
+    prompt_task = "Create a story using the following emojis: "
+    prompt_content = random.choice(EMOJIS) + random.choice(EMOJIS)
+    return render(request, 'prompts/new.html', {'prompt_task': prompt_task, 'prompt_content': prompt_content})
 

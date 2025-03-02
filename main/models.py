@@ -2,17 +2,23 @@ from django.db import models
 from django.conf import settings
 
 class Prompt(models.Model):
-    message = models.TextField()
+    task = models.TextField()
+    content = models.TextField()
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     answer = models.TextField(blank=True, null=True)
     is_finished = models.BooleanField(default=False)
+    is_active_prompt = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.message
+        return f"{self.task} - {self.content}"
+    
+    # legacy catch for previous version where there was a message field
+    @property
+    def message (self):
+        return f"{self.task}: {self.content}"
     
 
 class Word(models.Model):
-    objects = None
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     native = models.CharField(max_length=100)
     translation = models.CharField(max_length=100, blank=True, null=True)

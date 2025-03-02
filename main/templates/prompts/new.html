@@ -1,17 +1,15 @@
 {% extends 'core/base.html' %}
 {% block content %}
 <h2 class="font-bold">Your prompt:</h2>
-<h3 class="font-bold text-2xl">{{ prompt_message }}</h3>
+<div class="badge">{{prompt_task}}</div>
+<h3 class="font-bold text-2xl">{{ prompt_content }}</h3>
 
-<!-- make two buttons, one to get a new prompt by reloading the page, one that submits POST form to commit the prompt -->
 <div class="flex flex-row gap-2">
-
-
-
     <a href="{% url 'prompt.new' %}" class="btn btn-sm btn-outline">Get New Prompt</a>
-    <form action="{% url 'prompt.new' %}" method="POST">
+    <form action="" method="POST">
         {% csrf_token %}
-        <input type="hidden" name="message" value="{{ prompt_message }}">
+        <input type="hidden" name="task" value="{{ prompt_task }}">
+        <input type="hidden" name="content" value="{{ prompt_content }}">
         <button class="btn btn-sm btn-primary" type="submit">Accept</button>
     </form>
 
