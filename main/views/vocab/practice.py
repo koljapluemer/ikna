@@ -1,7 +1,5 @@
 from django.shortcuts import redirect
 from main.models import WordPractice, Word
-from main.views.interactions.sr import interaction_sr
-from main.views.interactions.thanks_will_remember import interaction_thanks_will_remember
 from main.views.utils import ensure_user
 import random
 from django.utils import timezone
