@@ -1,7 +1,5 @@
 from django.urls import path
 
-from main.views.interactions.sr import interaction_sr
-from main.views.interactions.thanks_will_remember import interaction_thanks_will_remember
 from main.views.prompts.add_vocab import prompt_add_vocab
 from main.views.prompts.list import prompt_list
 from main.views.prompts.new import prompt_new
@@ -30,7 +28,4 @@ urlpatterns = [
     path('prompt/<int:pk>/deactivate/', deactivate_prompt, name='prompt.deactivate'),
     path('prompt/<int:pk>/vocab_list/', prompt_vocab_list, name='prompt.vocab_list'),
     path('prompt/vocab_list/', prompt_vocab_list, name='prompt.vocab_list'),
-    # interactions
-    path('interaction/sr/<int:pk>/', interaction_sr, name='interaction.sr'), # type: ignore
-    path('interaction/thanks_will_remember/<int:pk>/', interaction_thanks_will_remember, name='interaction.thanks_will_remember'), # type: ignore
 ]

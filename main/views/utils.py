@@ -16,6 +16,7 @@ def ensure_user(request):
         login(request, user, backend='django.contrib.auth.backends.ModelBackend')
 
 def handle_sr_answer(answer, practice):
+    print("answer", answer)
     card = Card(
             card_id = practice.card_id,
             state = State[practice.state] if practice.state else State.Learning,
